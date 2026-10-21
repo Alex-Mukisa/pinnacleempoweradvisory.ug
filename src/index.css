@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap');
+@import "tailwindcss";
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+  color: #172540;
+  background: #fdfefc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --ink: #172540;
+  --navy: #122c5b;
+  --green: #173b72;
+  --green-deep: #102451;
+  --leaf: #66b64b;
+  --leaf-deep: #397a32;
+  --gold: #66b64b;
+  --paper: #fdfefc;
+  --surface: #ffffff;
+  --surface-tint: #f3f7f0;
+  --muted: #56647a;
+  --line: #dce4dc;
+  --success: #286735;
+  --warning: #805b13;
+  --error: #9c3434;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --serif: 'Playfair Display', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; background: var(--paper); }
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+::selection { background: #cbe7bf; color: var(--green-deep); }
+:focus-visible { outline: 2px solid #4da43a; outline-offset: 4px; }
