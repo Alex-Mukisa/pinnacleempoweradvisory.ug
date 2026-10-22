@@ -38,11 +38,10 @@ When delivery is unconfigured or the provider fails, the form shows an error and
 A Render Blueprint is included in `render.yaml`. To publish:
 
 1. Push this project to a Git repository that you control.
-2. Sign in to Render, open [New Blueprint](https://dashboard.render.com/blueprints/new), and connect `Alex-Mukisa/pinnacleempoweradvisory.ug` from GitHub. Select branch `main`; Render will read this repository's `render.yaml`.
-3. Approve the web service and persistent disk plan in Render. The Blueprint requests the Starter service and a 1 GB disk, which may incur charges under Render's current pricing.
-4. Set `CONTACT_EMAIL` to `pinnacleempoweradvisory@gmail.com`. Add private `RESEND_API_KEY` and `RESEND_FROM_EMAIL` values in Render after verifying the sender domain in Resend. Set `AI_API_KEY` if live model answers are required; the local FAQ works without it.
-5. Deploy and check `/api/health`. Confirm it reports `contactEmail: "configured"`; it exposes readiness only, never secret values. The Render disk is mounted at `/var/data` so SQLite chat history persists across restarts.
-6. Add `pinnacleempoweradvisory.ug` under the service's Custom Domains settings, then configure the exact DNS records Render provides at your registrar. Render provisions HTTPS after DNS verification.
+2. In Render, create a new Blueprint deployment and connect that repository.
+3. Set `CONTACT_EMAIL` to the approved recipient, plus private `RESEND_API_KEY` and `RESEND_FROM_EMAIL` values in Render after verifying the sender domain in Resend. Set `AI_API_KEY` if live model answers are required; the local FAQ works without it.
+4. Deploy and check `/api/health`. Confirm it reports `contactEmail: "configured"`; it exposes readiness only, never secret values. The Render disk is mounted at `/var/data` so SQLite chat history persists across restarts.
+5. Register `pinnacleempoweradvisory.ug` with an accredited registrar if it is available, then configure the exact DNS records Render provides. Render provisions HTTPS after DNS verification.
 
 The application, API, and database run on the same Node service. Do not publish only the `dist` folder: that would omit the chat API and database. The included Render plan uses a paid persistent disk/service; select an appropriate plan in the host dashboard before deployment.
 
