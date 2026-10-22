@@ -3,7 +3,7 @@ import { Bot, LoaderCircle, MessageCircle, Send, X } from 'lucide-react'
 import './ChatAssistant.css'
 
 type ChatMessage = { role: 'user' | 'assistant'; content: string }
-type Health = { database: 'connected'; ai: 'configured' | 'local-faq' }
+type Health = { database: 'connected' | 'browser-local'; ai: 'configured' | 'local-faq' }
 
 const greeting: ChatMessage = {
   role: 'assistant',
@@ -12,9 +12,23 @@ const greeting: ChatMessage = {
 
 export default function ChatAssistant() {
   const [open, setOpen] = useState(false)
-  const [messages, setMessages] = useState<ChatMessage[]>([greeting])
+  const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    const savedMessages = window.localStorage.getItem('pinnacle-chat-messages')
+    if (!savedMessages) return [greeting]
+    try {
+      const parsed: unknown = JSON.parse(savedMessages)
+      if (Array.isArray(parsed)) {
+        const validMessages = parsed.filter((item): item is ChatMessage =>
+          item && ['user', 'assistant'].includes(item.role) && typeof item.content === 'string',
+        )
+        if (validMessages.length) return validMessages.slice(-40)
+      }
+    } catch {
+      window.localStorage.removeItem('pinnacle-chat-messages')
+    }
+    return [greeting]
+  })
   const [conversationId, setConversationId] = useState(() => window.localStorage.getItem('pinnacle-chat-id') || '')
-  const initialConversationId = useRef(conversationId)
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -22,18 +36,8 @@ export default function ChatAssistant() {
   const endRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const savedId = initialConversationId.current
-    if (!savedId) return
-    fetch(`/api/conversations/${savedId}`)
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error('Conversation could not be restored.')))
-      .then((data: { messages?: ChatMessage[] }) => {
-        if (data.messages?.length) setMessages(data.messages)
-      })
-      .catch(() => {
-        window.localStorage.removeItem('pinnacle-chat-id')
-        setConversationId('')
-      })
-  }, [])
+    window.localStorage.setItem('pinnacle-chat-messages', JSON.stringify(messages.slice(-40)))
+  }, [messages])
 
   useEffect(() => {
     if (!open) return
@@ -59,7 +63,7 @@ export default function ChatAssistant() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: content, conversationId: conversationId || undefined }),
+        body: JSON.stringify({ message: content, conversationId: conversationId || undefined, history: messages.slice(-12) }),
       })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || 'The assistant could not respond.')
@@ -83,7 +87,7 @@ export default function ChatAssistant() {
     {open && <section className="assistant-panel" aria-label="Pinnacle AI assistant">
       <header className="assistant-header">
         <img src="/logo.gif" alt="Pinnacle Empower Advisory logo" />
-        <div><strong>Pinnacle Assistant</strong><small><i />{health ? health.ai === 'configured' ? 'AI connected · conversation saved' : 'Assistant connected · conversation saved' : 'Connecting to assistant…'}</small></div>
+        <div><strong>Pinnacle Assistant</strong><small><i />{health ? `${health.ai === 'configured' ? 'AI connected' : 'Assistant connected'} · ${health.database === 'connected' ? 'conversation saved' : 'saved in this browser'}` : 'Connecting to assistant…'}</small></div>
         <button type="button" aria-label="Close assistant" onClick={() => setOpen(false)}><X size={18} /></button>
       </header>
       <div className="assistant-messages" aria-live="polite" aria-relevant="additions text">

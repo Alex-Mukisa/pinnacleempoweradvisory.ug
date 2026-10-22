@@ -47,6 +47,12 @@ The application, API, and database run on the same Node service. Do not publish 
 
 The configured domain name does not itself register the domain or make the website public. Registration, DNS configuration, and a successful Render deployment are still required. The canonical and social-sharing URLs are set to `https://pinnacleempoweradvisory.ug/`.
 
+## Vercel deployment
+
+The Vercel deployment uses `api/[...path].js` for the health, chat, and contact endpoints. Chat history is saved in the visitor's browser on this host; use the Render service when server-side, cross-device conversation storage is required. Contact email requires the same server-only Resend variables configured in the Vercel project settings.
+
+The apex and `www` domains must be attached to the Vercel project, then pointed at Vercel at the domain registrar. Vercel may provide domain-specific DNS targets; use the exact records shown in its domain settings. If using the currently recommended targets, set apex A records `@` to `216.198.79.1` and `64.29.17.1`, and the `www` CNAME to `a7a8e61568d41a5e.vercel-dns-017.com`. Re-run domain verification after DNS propagates.
+
 ## Checks
 
 ```sh
