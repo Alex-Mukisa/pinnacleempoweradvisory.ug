@@ -45,7 +45,7 @@ A Render Blueprint is included in `render.yaml`. To publish:
 
 The application, API, and database run on the same Node service. Do not publish only the `dist` folder: that would omit the chat API and database. The included Render plan uses a paid persistent disk/service; select an appropriate plan in the host dashboard before deployment.
 
-The configured domain name does not itself register the domain or make the website public. Registration, DNS configuration, and a successful Render deployment are still required. The canonical and social-sharing URLs are set to `https://pinnacleempoweradvisory.ug/`.
+The `.ug` registry WHOIS lookup currently reports `pinnacleempoweradvisory.ug` as **not registered**. Adding it to a hosting project does not purchase the domain. Until it is registered and DNS is configured, the canonical and social-sharing URLs use the working Vercel URL, `https://pinnacle-empower-advisory.vercel.app/`. Register the domain through an accredited `.ug` registrar, then configure the DNS records for the chosen host.
 
 ## Vercel deployment
 

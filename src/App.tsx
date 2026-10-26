@@ -105,7 +105,7 @@ function Contact() {
           <a href={`tel:${company.phone.replaceAll(' ', '')}`}><Phone />{company.phone}</a>
           <a href={`tel:${company.additionalPhone.replaceAll(' ','')}`}><Phone />{company.additionalPhone}</a>
           <div className="address"><MapPin /><span>{company.address}<br />Kampala, Uganda</span></div>
-          <p className="form-note">Messages are sent securely to the Pinnacle team. You can also email us directly using the address above.</p>
+          <p className="form-note">If online email delivery is unavailable, the form will provide a prefilled email draft. You can also email us directly using the address above.</p>
         </div>
         <form className="contact-form" onSubmit={submit}>
           <div className="form-row">
